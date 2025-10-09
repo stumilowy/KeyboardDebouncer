@@ -14,6 +14,10 @@ namespace KeyboardLogger
         private const int WM_KEYDOWN = 0x0100; // Key down event
         private const int WM_KEYUP = 0x0101;
 
+        // Console window visibility constants
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 5;
+
         // Delegate for the hook callback function
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
@@ -38,14 +42,12 @@ namespace KeyboardLogger
 
             Console.WriteLine("Logging keyboard input in the background. Press ESC to exit.");
 
-            // To make the application truly invisible, you can hide the console window.
-            // Uncomment the two lines below to hide this window.
-            //IntPtr handle = GetConsoleWindow();
-            //ShowWindow(handle, 0); // 0 = SW_HIDE
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
 
             // Keep the application running. A more robust application might use a message loop,
             // but for this simple logger, this is sufficient.
-            Application.Run();
+            Application.Run(new TrayAppContext());
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -122,49 +124,6 @@ namespace KeyboardLogger
 
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
-        //{
-        //    if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
-        //    {
-        //        bool isKeyDown = (lParam.ToInt32() & (1 << 30)) != 0;
-
-        //        if (isKeyDown)
-        //        {
-        //            Console.WriteLine($"Was down");
-        //            return CallNextHookEx(_hookID, nCode, wParam, lParam);
-        //        }
-
-        //        int vkCode = Marshal.ReadInt32(lParam);
-        //        ConsoleKey key = (ConsoleKey)vkCode;
-        //        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-        //        string keyString = key.ToString();
-        //        Console.WriteLine($"key press: {keyString}");
-        //        if (pressedKyes.TryGetValue(keyString, out long lastPressedTime))
-        //        {
-        //            if (currentTime - lastPressedTime > KEY_PRESS_THRESHOLD_MS)
-        //            {
-        //                Console.WriteLine($"Blocking key press: {keyString}");
-        //                return (IntPtr)1; // Block the input
-        //            }
-
-        //            pressedKyes[keyString] = currentTime;
-        //        }
-        //        else
-        //        {
-        //            pressedKyes.Add(keyString, currentTime);
-        //        }
-
-
-        //        if (key == ConsoleKey.Escape)
-        //        {
-        //            Console.WriteLine("Escape key pressed. Unhooking and exiting...");
-        //            UnhookWindowsHookEx(_hookID);
-        //            Application.Exit();
-        //        }
-        //    }
-
-        //    return CallNextHookEx(_hookID, nCode, wParam, lParam);
-        //}
-
 
 
         #region Windows API Imports
