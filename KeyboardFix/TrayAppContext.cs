@@ -13,7 +13,7 @@ internal class TrayAppContext : ApplicationContext
     {
         trayIcon = new NotifyIcon()
         {
-            Icon = SystemIcons.Information, // You can use a custom .ico file
+            Icon = new Icon("C:\\Users\\jacek\\source\\repos\\stumilowy\\KeyboardDebouncer\\KeyboardFix\\logo.ico"),
             Text = "Keyboard Hook Running",
             Visible = true
         };
