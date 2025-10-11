@@ -36,7 +36,7 @@ namespace KeyboardFix
 
         private int totalBlocks = 0;
 
-        private int KEY_PRESS_THRESHOLD_MS = 50; // Minimum time between key presses to consider them separate
+        public static int KEY_PRESS_THRESHOLD_MS = 50; // Minimum time between key presses to consider them separate
 
         // Constructor to initialize the _proc field
         public KeyboardDebauncer(LogsWindow logsWindow)
@@ -44,6 +44,11 @@ namespace KeyboardFix
             _proc = HookCallback;
             _hookID = SetHook(_proc);
             this.logsWindow = logsWindow;
+        }
+
+        public void SetKeyPressThreshold(int threshold)
+        {
+            KEY_PRESS_THRESHOLD_MS = threshold;
         }
 
         private IntPtr SetHook(LowLevelKeyboardProc proc)

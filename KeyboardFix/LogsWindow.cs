@@ -129,8 +129,8 @@ namespace KeyboardFix
             // 
             this.totalBlocksLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.totalBlocksLabel.AutoSize = true;
-            this.totalBlocksLabel.Font = new System.Drawing.Font(this.totalBlocksLabel.Font.FontFamily, 16F);
-            this.totalBlocksLabel.Location = new System.Drawing.Point(12, 361);
+            this.totalBlocksLabel.Font = new System.Drawing.Font(SystemFonts.MenuFont.FontFamily, 16F);
+            this.totalBlocksLabel.Location = new System.Drawing.Point(12, 358);
             this.totalBlocksLabel.Name = "totalBlocksLabel";
             this.totalBlocksLabel.Size = new System.Drawing.Size(154, 50);
             this.totalBlocksLabel.TabIndex = 1;
@@ -141,7 +141,7 @@ namespace KeyboardFix
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.ForeColor = System.Drawing.Color.White;
-            this.closeButton.Location = new System.Drawing.Point(200, 355);
+            this.closeButton.Location = new System.Drawing.Point(200, 361);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(150, 25);
             this.closeButton.TabIndex = 2;

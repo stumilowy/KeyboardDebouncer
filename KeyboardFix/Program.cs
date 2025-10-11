@@ -20,7 +20,7 @@ namespace KeyboardLogger
 
             // The Application.Run call is what keeps the application alive.
             // It will continue to run as long as the ApplicationContext object exists.
-            Application.Run(new TrayAppContext(logWindow));
+            Application.Run(new TrayAppContext(logWindow, keyboardDebauncer));
         }
 
     }
