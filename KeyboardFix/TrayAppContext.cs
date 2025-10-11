@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyboardFix;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -8,41 +9,33 @@ using System.Windows.Forms;
 internal class TrayAppContext : ApplicationContext
 {
     private NotifyIcon trayIcon;
+    private LogsWindow logsWindow;
 
-    public TrayAppContext()
+    public TrayAppContext(LogsWindow logsWindow)
     {
+        this.logsWindow = logsWindow;   
         trayIcon = new NotifyIcon()
         {
-            Icon = new Icon("C:\\Users\\jacek\\source\\repos\\stumilowy\\KeyboardDebouncer\\KeyboardFix\\logo.ico"),
+            Icon = new Icon("assets/logo.ico"),
             Text = "Keyboard Hook Running",
             Visible = true
         };
 
         // Create a context menu
         var contextMenu = new ContextMenuStrip();
-        contextMenu.Items.Add("Show Console", null, ShowConsole);
+        contextMenu.Items.Add("Open Logs Panle", null, ShowLogs);
         contextMenu.Items.Add("Exit", null, Exit);
 
         trayIcon.ContextMenuStrip = contextMenu;
     }
-
-    private void ShowConsole(object sender, EventArgs e)
+    private void ShowLogs(object sender, EventArgs e)
     {
-        var handle = GetConsoleWindow();
-        ShowWindow(handle, SW_SHOW);
+        logsWindow.Show();
+        logsWindow.BringToFront();
     }
-
     private void Exit(object sender, EventArgs e)
     {
         trayIcon.Visible = false;
         Application.Exit();
     }
-
-    [DllImport("kernel32.dll")]
-    private static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll")]
-    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-    private const int SW_SHOW = 5;
 }
