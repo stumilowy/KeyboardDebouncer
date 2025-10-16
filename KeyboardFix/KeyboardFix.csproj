@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContainer.cs" />
     <Compile Include="KeyboardDebauncer.cs" />
     <Compile Include="LogsWindow.cs">
       <SubType>Form</SubType>

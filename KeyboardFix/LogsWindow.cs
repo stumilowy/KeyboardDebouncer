@@ -15,8 +15,11 @@ namespace KeyboardFix
 
         private const int MAX_LOG_LINES = 1000;
 
-        public LogsWindow()
+        private readonly DataContainer dataContainer;
+
+        public LogsWindow(DataContainer dataContainer)
         {
+            this.dataContainer = dataContainer;
             InitializeComponent();
             MainForm_Load();
             this.Text = "Logs";
@@ -110,6 +113,7 @@ namespace KeyboardFix
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.totalBlocksLabel = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
+            this.blocksCountButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -143,11 +147,25 @@ namespace KeyboardFix
             this.closeButton.ForeColor = System.Drawing.Color.White;
             this.closeButton.Location = new System.Drawing.Point(200, 361);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(150, 25);
+            this.closeButton.Size = new System.Drawing.Size(25, 25);
             this.closeButton.TabIndex = 2;
-            this.closeButton.Text = "Close Panel";
+            this.closeButton.Text = "C";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+
+            //
+            // BolockedCountsButton
+            //
+            this.blocksCountButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.blocksCountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.blocksCountButton.ForeColor = System.Drawing.Color.White;
+            this.blocksCountButton.Location = new System.Drawing.Point(180, 330);
+            this.blocksCountButton.Name = "blockedCountButton";
+            this.blocksCountButton.Size = new System.Drawing.Size(25, 25);
+            this.blocksCountButton.TabIndex = 3;
+            this.blocksCountButton.Text = "S";
+            this.blocksCountButton.UseVisualStyleBackColor = true;
+            this.blocksCountButton.Click += new System.EventHandler(this.blockedCountButton_Click);
             // 
             // LogsWindow
             // 
@@ -166,7 +184,16 @@ namespace KeyboardFix
             this.Hide();
         }
 
+        private void blockedCountButton_Click(object sender, EventArgs e)
+        {
+            dataContainer.getBlockedCountsDict().ToList().ForEach(kvp =>
+            {
+                AppendLog($"Key: {kvp.Key}, Blocked Count: {kvp.Value}", Color.LightCoral);
+            });
+        }
+
         private System.Windows.Forms.Label totalBlocksLabel;
         private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Button blocksCountButton;
     }
 }

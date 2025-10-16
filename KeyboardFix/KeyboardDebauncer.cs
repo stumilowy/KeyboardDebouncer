@@ -13,6 +13,7 @@ namespace KeyboardFix
     internal class KeyboardDebauncer
     {
         private LogsWindow logsWindow;
+        private readonly DataContainer dataContainer;
         // Windows API constants
         private const int WH_KEYBOARD_LL = 13; // Low-level keyboard hook
         private const int WM_KEYDOWN = 0x0100; // Key down event
@@ -39,11 +40,12 @@ namespace KeyboardFix
         public static int KEY_PRESS_THRESHOLD_MS = 50; // Minimum time between key presses to consider them separate
 
         // Constructor to initialize the _proc field
-        public KeyboardDebauncer(LogsWindow logsWindow)
+        public KeyboardDebauncer(LogsWindow logsWindow, DataContainer dataContainer)
         {
             _proc = HookCallback;
             _hookID = SetHook(_proc);
             this.logsWindow = logsWindow;
+            this.dataContainer = dataContainer;
         }
 
         public void SetKeyPressThreshold(int threshold)
@@ -92,6 +94,7 @@ namespace KeyboardFix
                         {
                             totalBlocks++;
                             logsWindow.AppendLog($"Blocking key press: {key}", Color.Red);
+                            dataContainer.IncrementBlockCount(key.ToString());
                             SendBlockedCountToLog();
                             return (IntPtr)1; // Block the input
                         }

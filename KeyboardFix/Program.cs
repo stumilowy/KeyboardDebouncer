@@ -12,8 +12,9 @@ namespace KeyboardLogger
     {
         public static void Main()
         {
-            LogsWindow logWindow = new LogsWindow();
-            KeyboardDebauncer keyboardDebauncer = new KeyboardDebauncer(logWindow);
+            DataContainer dataContainer = new DataContainer();
+            LogsWindow logWindow = new LogsWindow(dataContainer);
+            KeyboardDebauncer keyboardDebauncer = new KeyboardDebauncer(logWindow,dataContainer);
 
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
