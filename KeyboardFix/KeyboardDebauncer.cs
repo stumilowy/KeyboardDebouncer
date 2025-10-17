@@ -12,6 +12,8 @@ namespace KeyboardFix
 {
     internal class KeyboardDebauncer
     {
+        private bool active = true;
+
         private LogsWindow logsWindow;
         private readonly DataContainer dataContainer;
         // Windows API constants
@@ -128,6 +130,40 @@ namespace KeyboardFix
         public void setThreshold(int threshold)
         {
             KEY_PRESS_THRESHOLD_MS = threshold;
+        }
+
+        public void ToggleActive()
+        {
+            // Toggle the flag first
+            active = !active;
+
+            if (!active)
+            {
+                // Deactivating: unhook so OS receives normal keyboard events
+                if (_hookID != IntPtr.Zero)
+                {
+                    try
+                    {
+                        UnhookWindowsHookEx(_hookID);
+                    }
+                    catch (Exception ex)
+                    {
+                        // swallow exceptions but log them for diagnostics
+                        logsWindow?.AppendLog($"Failed to unhook keyboard: {ex.Message}", Color.Orange);
+                    }
+                    _hookID = IntPtr.Zero;
+                }
+                logsWindow?.AppendLog("Keyboard hook disabled (debouncer inactive).", Color.LightGray);
+            }
+            else
+            {
+                // Activating: install the hook if not present
+                if (_hookID == IntPtr.Zero)
+                {
+                    _hookID = SetHook(_proc);
+                }
+                logsWindow?.AppendLog("Keyboard hook enabled (debouncer active).", Color.LightGreen);
+            }
         }
 
         #region Windows API Imports

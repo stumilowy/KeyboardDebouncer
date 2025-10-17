@@ -133,8 +133,8 @@ namespace KeyboardFix
             // 
             this.totalBlocksLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.totalBlocksLabel.AutoSize = true;
-            this.totalBlocksLabel.Font = new System.Drawing.Font(SystemFonts.MenuFont.FontFamily, 16F);
-            this.totalBlocksLabel.Location = new System.Drawing.Point(12, 358);
+            this.totalBlocksLabel.Font = new System.Drawing.Font(SystemFonts.MenuFont.FontFamily, 12F);
+            this.totalBlocksLabel.Location = new System.Drawing.Point(12, 361);
             this.totalBlocksLabel.Name = "totalBlocksLabel";
             this.totalBlocksLabel.Size = new System.Drawing.Size(154, 50);
             this.totalBlocksLabel.TabIndex = 1;
@@ -145,11 +145,11 @@ namespace KeyboardFix
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.ForeColor = System.Drawing.Color.White;
-            this.closeButton.Location = new System.Drawing.Point(200, 361);
+            this.closeButton.Location = new System.Drawing.Point(260, 361);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(25, 25);
+            this.closeButton.Size = new System.Drawing.Size(100, 25);
             this.closeButton.TabIndex = 2;
-            this.closeButton.Text = "C";
+            this.closeButton.Text = "Close Window";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
 
@@ -159,11 +159,11 @@ namespace KeyboardFix
             this.blocksCountButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.blocksCountButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.blocksCountButton.ForeColor = System.Drawing.Color.White;
-            this.blocksCountButton.Location = new System.Drawing.Point(180, 330);
+            this.blocksCountButton.Location = new System.Drawing.Point(130, 361);
             this.blocksCountButton.Name = "blockedCountButton";
-            this.blocksCountButton.Size = new System.Drawing.Size(25, 25);
+            this.blocksCountButton.Size = new System.Drawing.Size(125, 25);
             this.blocksCountButton.TabIndex = 3;
-            this.blocksCountButton.Text = "S";
+            this.blocksCountButton.Text = "Show Block Count";
             this.blocksCountButton.UseVisualStyleBackColor = true;
             this.blocksCountButton.Click += new System.EventHandler(this.blockedCountButton_Click);
             // 
@@ -173,6 +173,7 @@ namespace KeyboardFix
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.totalBlocksLabel);
             this.Controls.Add(this.closeButton);
+            this.Controls.Add(this.blocksCountButton);
             this.Name = "Logs Panel";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -183,13 +184,15 @@ namespace KeyboardFix
         {
             this.Hide();
         }
-
         private void blockedCountButton_Click(object sender, EventArgs e)
         {
-            dataContainer.getBlockedCountsDict().ToList().ForEach(kvp =>
+            // Show keys sorted by their blocked count (value) descending.
+            // Tie-breaker: key ascending for deterministic order.
+            var dict = dataContainer.getBlockedCountsDict();
+            foreach (var kvp in dict.OrderByDescending(k => k.Value).ThenBy(k => k.Key))
             {
-                AppendLog($"Key: {kvp.Key}, Blocked Count: {kvp.Value}", Color.LightCoral);
-            });
+                AppendLog($"Key: {kvp.Key}, Blocked Count: {kvp.Value}", Color.Aqua);
+            }
         }
 
         private System.Windows.Forms.Label totalBlocksLabel;

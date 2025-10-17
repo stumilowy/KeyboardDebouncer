@@ -11,6 +11,7 @@ internal class TrayAppContext : ApplicationContext
     private NotifyIcon trayIcon;
     private LogsWindow logsWindow;
     private KeyboardDebauncer keyboardDebauncer;
+    private ToolStripMenuItem toggleActiveMenuItem;
 
     public TrayAppContext(LogsWindow logsWindow, KeyboardDebauncer keyboardDebauncer)
     {
@@ -25,6 +26,16 @@ internal class TrayAppContext : ApplicationContext
 
         // Create a context menu
         var contextMenu = new ContextMenuStrip();
+
+        // Toggle active menu item
+        toggleActiveMenuItem = new ToolStripMenuItem("Debouncer: Active")
+        {
+            CheckOnClick = true,
+            Checked = true // default matches KeyboardDebauncer default state
+        };
+        toggleActiveMenuItem.Click += ToggleActiveMenuItem_Click;
+        contextMenu.Items.Add(toggleActiveMenuItem);
+
         contextMenu.Items.Add("Show Console", null, ShowLogs);
 
         // Add the Mills Chooser
@@ -44,6 +55,26 @@ internal class TrayAppContext : ApplicationContext
         contextMenu.Items.Add("Exit", null, Exit);
 
         trayIcon.ContextMenuStrip = contextMenu;
+    }
+
+    private void ToggleActiveMenuItem_Click(object sender, EventArgs e)
+    {
+        // Toggle the debouncer behavior
+        keyboardDebauncer.ToggleActive();
+
+        // Update menu text and tray tooltip to reflect state
+        if (toggleActiveMenuItem.Checked)
+        {
+            toggleActiveMenuItem.Text = "Debouncer: Active";
+            trayIcon.Text = "Keyboard Hook Running";
+            logsWindow?.AppendLog("Debouncer activated.", Color.LightGreen);
+        }
+        else
+        {
+            toggleActiveMenuItem.Text = "Debouncer: Inactive";
+            trayIcon.Text = "Keyboard Hook Paused";
+            logsWindow?.AppendLog("Debouncer deactivated.", Color.LightGray);
+        }
     }
 
     private void MillsChooser_Click(object sender, EventArgs e)
