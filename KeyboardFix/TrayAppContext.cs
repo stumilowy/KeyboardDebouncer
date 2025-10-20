@@ -19,7 +19,7 @@ internal class TrayAppContext : ApplicationContext
         this.keyboardDebauncer = keyboardDebauncer;
         trayIcon = new NotifyIcon()
         {
-            Icon = new Icon("assets/logo.ico"),
+            Icon = new Icon("assets/logo2.ico"),
             Text = "Keyboard Hook Running",
             Visible = true
         };
